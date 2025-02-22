@@ -1,5 +1,4 @@
 /*
------------------------------------------------------------
 ### Documentation for Widgets and Properties Used:
 
 1. **Card**  
@@ -46,51 +45,36 @@ import 'package:expensestrackerapp/model/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseItem extends StatelessWidget {
-  const ExpenseItem(this.expense, {super.key});
-
   final Expense expense;
+
+  const ExpenseItem({Key? key, required this.expense}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Card(
-      elevation: 5,
-      color: const Color.fromARGB(255, 137, 193, 250),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 35),
-            Row(
-              children: [
-                Text(
-                  '\$${expense.amount.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 35),
-                Icon(categoryIcons[expense.category], color: Colors.white),
-                const Spacer(),
-                Text(
-                  expense.category.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const Spacer(),
-                Text(
-                  formatter.format(expense.date),
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
-                ),
-              ],
-            ),
-          ],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: theme.cardColor,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: theme.colorScheme.primary,
+          child: Icon(categoryIcons[expense.category], color: Colors.white),
+        ),
+        title: Text(
+          expense.name,
+          style: theme.textTheme.titleMedium?.copyWith(
+            overflow: TextOverflow.ellipsis,
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+        subtitle: Text(
+          '\$${expense.amount.toStringAsFixed(2)} - ${expense.formattedDate}',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.onPrimaryContainer,
+          ),
         ),
       ),
     );

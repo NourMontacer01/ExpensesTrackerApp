@@ -14,34 +14,28 @@ import 'package:flutter/material.dart';
 import 'package:expensestrackerapp/model/expense.dart';
 
 class ExpensesList extends StatelessWidget {
-  const ExpensesList({
-    super.key,
-    required this.expenses,
-    required this.onRemoveExpense,
-  });
+  final List<Expense> expenses;
+  final void Function(Expense) onRemove;
 
-  final List<Expense> expenses; // List of expenses to display
-  final void Function(Expense expense)
-  onRemoveExpense; // Callback function to remove an expense
+  const ExpensesList({Key? key, required this.expenses, required this.onRemove})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: expenses.length, // Number of items in the list
-        itemBuilder:
-            (context, index) => Dismissible(
-              key: ValueKey(
-                expenses[index],
-              ), // Unique key for each dismissible item
-              onDismissed: (direction) {
-                onRemoveExpense(
-                  expenses[index],
-                ); // Calls the remove function when swiped away
-              },
-              child: ExpenseItem(expenses[index]), // Displays the expense item
+    return ListView.builder(
+      itemCount: expenses.length,
+      itemBuilder:
+          (ctx, index) => Dismissible(
+            key: ValueKey(expenses[index].id),
+            background: Container(
+              color: Theme.of(context).colorScheme.error,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Icon(Icons.delete, color: Colors.white),
             ),
-      ),
+            onDismissed: (direction) => onRemove(expenses[index]),
+            child: ExpenseItem(expense: expenses[index]),
+          ),
     );
   }
 }

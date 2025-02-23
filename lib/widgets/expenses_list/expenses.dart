@@ -19,7 +19,7 @@ import 'package:expensestrackerapp/widgets/expenses_list/expenses_list.dart';
 import 'package:expensestrackerapp/widgets/chart/chart.dart';
 
 class Expenses extends StatefulWidget {
-  const Expenses({Key? key}) : super(key: key);
+  const Expenses({super.key});
 
   @override
   _ExpensesState createState() => _ExpensesState();
@@ -82,6 +82,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openNewExpenseModal() {
     showModalBottomSheet(
+      useSafeArea: true,
       context: context,
       builder: (ctx) => NewExpense(onAddExpense: _addExpense),
       isScrollControlled: true,
@@ -90,6 +91,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     final theme = Theme.of(context);
     Widget mainContent = const Center(child: Text('No expenses added yet!'));
 
@@ -109,12 +112,20 @@ class _ExpensesState extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _expenses),
-          Expanded(child: mainContent)
-        ],
-      ),
+      body:
+          width < 600
+              ? Column(
+                children: [
+                  Chart(expenses: _expenses),
+                  Expanded(child: mainContent),
+                ],
+              )
+              : Row(
+                children: [
+                  Expanded(child: mainContent),
+                  Expanded(child: Chart(expenses: _expenses)),
+                ],
+              ),
     );
   }
 }

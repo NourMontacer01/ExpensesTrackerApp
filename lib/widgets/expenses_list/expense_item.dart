@@ -47,7 +47,7 @@ import 'package:flutter/material.dart';
 class ExpenseItem extends StatelessWidget {
   final Expense expense;
 
-  const ExpenseItem({Key? key, required this.expense}) : super(key: key);
+  const ExpenseItem({super.key, required this.expense});
 
   @override
   Widget build(BuildContext context) {

@@ -17,8 +17,11 @@ class ExpensesList extends StatelessWidget {
   final List<Expense> expenses;
   final void Function(Expense) onRemove;
 
-  const ExpensesList({Key? key, required this.expenses, required this.onRemove})
-    : super(key: key);
+  const ExpensesList({
+    super.key,
+    required this.expenses,
+    required this.onRemove,
+  });
 
   @override
   Widget build(BuildContext context) {
